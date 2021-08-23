@@ -1,59 +1,36 @@
-package test.MobileBanking.tests;
+package test.MobileApp.tests;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
+import test.MobileApp.form.FrmHomeScreen;
+import test.MobileApp.form.FrmLoginScreen;
+import test.MobileAppBaseClass.MobileAppBaseClass;
 
-import MobileBankingBaseTest.CommonApps;
-import MobileBankingBaseTest.Constant;
-import MobileBankingBaseTest.MobileBankingBaseClass;
-import test.MobileBanking.form.Registration;
-import test.MobileBanking.form.FlashScreen;
+public class HomeConnectProfile extends MobileAppBaseClass {
 
-public class RegistrationTest extends MobileBankingBaseClass {
-
-	FlashScreen flash = new FlashScreen();
-	Registration registration = new Registration();
+	FrmLoginScreen login = new FrmLoginScreen();
+	FrmHomeScreen home = new FrmHomeScreen();
 	
-	
-	@Test
-	public void registrationWithEmptyDateOfBirthAndVerifyError() throws InterruptedException
-	{
-		SoftAssert art =new SoftAssert();
-		int testCaseRow = MobileBankingBaseClass.getTestCaseRowFromTitle("registrationWithEmptyDateOfBirthAndVerifyError");
-		flash.clickUserRegistrationbtn();
-		registration.enterEmail(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Email));
-		registration.enterPassword(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Password));
-		registration.selectProfile(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.ProfileFor));
-		registration.enterFirstName(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.FirstName));
-		registration.enterLastName(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.LastName));
-		registration.selectGender(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Gender));
-		registration.selectReligion(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Religion));
-		registration.selectMotherTongue(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.MT));
-		registration.selectCountry(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Country));
-		registration.clickOnSubmitbtn();
-		CommonApps.hideKeyboard();
-		art.assertTrue(registration.getErrorMessage());
+	@BeforeMethod
+	public void setHomeScreen() throws InterruptedException {
+		if (!home.isHomeScreen()) {
+			if (login.isLoginScreen()) {
+				login.doLogin();
+				home.clickHomeButton();
+			}
+		}
 	}
 	
 	
-	@Test(enabled=false)
-	public void registrationWithAllValidData1() throws InterruptedException
+	@Test
+	public void connectPremiumAndNewMatchesProfile() throws InterruptedException
 	{
 		
-		int testCaseRow = MobileBankingBaseClass.getTestCaseRowFromTitle("registrationWithAllValidData1");
-
-		registration.enterEmail(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Email));
-		registration.enterPassword(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Password));
-		registration.selectProfile(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.ProfileFor));
-		registration.enterFirstName(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.FirstName));
-		registration.enterLastName(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.LastName));
-		registration.selectGender(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Gender));
-		registration.selectDay(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Day));
-		registration.selectMonth(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Month));
-		registration.selectYear(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Year));
-		registration.selectReligion(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Religion));
-		registration.selectMotherTongue(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.MT));
-		registration.selectCountry(MobileBankingBaseClass.getRowValue(testCaseRow, Constant.Country));
+		//click on connect now on the premium profile 
+		home.clickConnectForPremiumFrofile();
+		
+		//click on the New Matches profile
+		home.clickConnectForNewMatchesFrofile();
 	}
 	
 }
